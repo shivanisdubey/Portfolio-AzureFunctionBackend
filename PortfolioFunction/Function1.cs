@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -15,10 +16,12 @@ namespace PortfolioFunction
     public class Function1
     {
         private readonly ILogger<Function1> _logger;
+        private readonly IConfiguration _config;
 
-        public Function1(ILogger<Function1> logger)
+        public Function1(ILogger<Function1> logger,IConfiguration config)
         {
             _logger = logger;
+            _config= config;
         }
 
         [Function("ContactEmailFunction")] //function Name
@@ -58,8 +61,8 @@ namespace PortfolioFunction
             var client = new SendGridClient(apiKey);
 
             // Email details
-            var from = new EmailAddress("shimana.dubey@gmail.com", "Portfolio Contact"); //verified mail from SendGrid (Setting->Sender authentication)
-            var to = new EmailAddress("shimana.dubey@gmail.com"); 
+            var from = new EmailAddress(_config["FromEmail"], "Portfolio Contact"); //verified mail from SendGrid (Setting->Sender authentication)
+            var to = new EmailAddress(_config["FromEmail"]); 
 
             var msg = MailHelper.CreateSingleEmail(
            from, //email from (sender)
