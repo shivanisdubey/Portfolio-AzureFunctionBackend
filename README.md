@@ -64,10 +64,13 @@ Add:
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
     "SendGridApiKey": "YOUR_SENDGRID_API_KEY",
     "FromEmail": "your_verified_sendgrid_email"
+  },
+  "Host": {
+    "CORS": "http://localhost:4200"
   }
 }
 ```
-
+(The CORS setting allows the Angular frontend running on http://localhost:4200 to call the function locally.)
 
 ### 3. Run Locally
 
